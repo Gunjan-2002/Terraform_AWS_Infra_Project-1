@@ -1,10 +1,8 @@
-Project Overview:
+### Project Overview:
+![Project Architecture](https://github.com/Gunjan-2002/Terraform_AWS_Infra_Project-1/assets/103045206/0e845e6a-4497-4160-9219-11f34dbed4f3)
 In this project, we will set up the infrastructure shown in the image above on AWS using Terraform. This includes a VPC, 2 public subnets, an internet gateway, a Security Group, 2 EC2 instances in different availability zones, an application load balancer, an S3 bucket, and more.
-
 First, we will create a VPC with a CIDR of 10.0.0.0/16. Inside it, we will create 2 public subnets with CIDRs of 10.0.1.0/24 and 10.0.2.0/24. Next, we will create an internet gateway so that resources in our VPC can access the internet. Then, we will set up route tables to define routes that help subnets manage traffic according to rules. After that, we will create a security group with inbound and outbound rules. We will then launch 2 EC2 instances with the same security group in 2 different availability zones, i.e., 2 different subnets. Next, we will create an S3 bucket. After creating all these resources, we will set up an application load balancer to distribute traffic to these 2 EC2 instances.
-
 This is the project overview. Now, we will go through the step-by-step process to create the infrastructure using Terraform.
-
 
 
 Prerequisites:
