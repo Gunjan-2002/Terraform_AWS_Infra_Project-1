@@ -20,7 +20,7 @@ Create a provider block to interact with the various resources supported by AWS.
 provider.tf
 
 
-COPY
+```
  terraform {
    required_providers {
      aws = {
@@ -33,6 +33,7 @@ COPY
  provider "aws" {
    region = "us-east-1"
  }
+```
 You can refer this document for Provider Resource
 
 Terraform Provider Resource
@@ -42,10 +43,11 @@ Now, create the VPC resource.
 aws_1_vpc.tf
 
 
-COPY
+```
  resource "aws_vpc" "myvpc" {
    cidr_block = var.cidr_block
  }
+```
 You can refer this document for VPC Resource
 
 Terraform AWS VPC Resource
@@ -55,21 +57,23 @@ Now, create a variables.tf file for defining variables and a variables.tfvars fi
 variables.tf
 
 
-COPY
+```
  variable "cidr_block" {
    type = string
  }
+```
 variables.tfvars
 
 
-COPY
+```
  cidr_block = "0.0.0.0/16"
+```
 After creating the VPC, we will now create 2 public subnets in 2 different availability zones within that VPC.
 
 aws_2_subnet.tf
 
 
-COPY
+```
  resource "aws_subnet" "sub-1" {
    vpc_id     = aws_vpc.myvpc.id
    cidr_block = "10.0.1.0/24"
@@ -91,6 +95,7 @@ COPY
      Name = "sub-2"
    }
  }
+```
 You can refer this documentation for Subnet.
 
 Terraform AWS Subnet Resource
@@ -100,7 +105,7 @@ As we know, when we create a Virtual Private Network, resources inside any subne
 aws_3_igw.tf
 
 
-COPY
+```
  resource "aws_internet_gateway" "igw" {
    vpc_id = aws_vpc.myvpc.id
 
@@ -108,6 +113,7 @@ COPY
      Name = "myigw"
    }
  }
+```
 You can refer this documentation for Internet Gateway.
 
 Terraform AWS Internet Gateway Resource
@@ -117,7 +123,7 @@ Even after creating the Internet gateway, resources in subnets still don't have 
 aws_4_rt.tf
 
 
-COPY
+```
  resource "aws_route_table" "myrt" {
    vpc_id = aws_vpc.myvpc.id
 
@@ -130,6 +136,7 @@ COPY
      Name = "myrt"
    }
  }
+```
 You can refer this documentation for Route Table.
 
 Terraform AWS Route Table Resource
@@ -139,7 +146,7 @@ Now we will create a resource to link a route table with a subnet. In this proje
 aws_5_rta.tf
 
 
-COPY
+```
  resource "aws_route_table_association" "myrta_1" {
    subnet_id      = aws_subnet.sub-1.id
    route_table_id = aws_route_table.myrt.id
@@ -149,6 +156,7 @@ COPY
    subnet_id      = aws_subnet.sub-2.id
    route_table_id = aws_route_table.myrt.id
  }
+```
 You can refer this documentation for Route Table Association.
 
 Terraform AWS Route Table Association Resource
@@ -158,7 +166,7 @@ Now we will create a Security Group inside the VPC we created.
 aws_6_sg.tf
 
 
-COPY
+```
  resource "aws_security_group" "mysg" {
    name_prefix = "web-sg-"
    description = "Security group in myvpc"
@@ -191,6 +199,7 @@ COPY
      Name = "web-sg"
    }
  }
+```
 You can refer this documentation for Security Group.
 
 Terraform AWS Security Group Resource
@@ -200,7 +209,7 @@ Create an S3 bucket for demonstration purposes.
 aws_7_s3.tf
 
 
-COPY
+```
  resource "aws_s3_bucket" "mys3" {
    bucket = "my-tf-s3-bucket-terraform-project"
 
@@ -208,6 +217,7 @@ COPY
      Name = "my-tf-s3-bucket-terraform-project"
    }
  }
+```
 You can refer this documentation for S3 Bucket.
 
 Terraform AWS S3 Resource
@@ -217,7 +227,7 @@ Now we will create 2 EC2 instances in the two different subnets we created earli
 aws_8_ec2.tf
 
 
-COPY
+```
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -257,6 +267,7 @@ resource "aws_instance" "mysecondec2" {
     Name = "mysecondec2"
   }
 }
+```
 You can refer this documentation for EC2 Instance.
 
 Terraform AWS EC2 Resource
@@ -266,7 +277,7 @@ Next, we will create the Load Balancer itself. We will use an Application Load B
 aws_9_alb.tf
 
 
-COPY
+```
 resource "aws_lb" "myalb" {
   name               = "myalb-tf"
   internal           = false
@@ -279,6 +290,7 @@ resource "aws_lb" "myalb" {
     Name = "myalb-tf"
   }
 }
+```
 You can refer this documentation for Application Load Balancer.
 
 Terraform AWS Application Load Balancer Resource
@@ -288,7 +300,7 @@ After creating the Load Balancer, we need to define a target group. The target g
 aws_10_alb-tg.tf
 
 
-COPY
+```
 resource "aws_lb_target_group" "myalb-tg" {
   name     = "myalb-tf-tg"
   port     = 80
@@ -312,6 +324,7 @@ resource "aws_lb_target_group_attachment" "myalb-tga-2" {
   target_id        = aws_instance.mysecondec2.id
   port             = 80
 }
+```
 You can refer this documentation for ALB Target Group & Target Group Attachment.
 
 Terraform AWS Target Group Resource
@@ -321,7 +334,7 @@ Finally, we will create a listener to forward incoming requests to the target gr
 aws_11_alb-lisn.tf
 
 
-COPY
+```
 resource "aws_lb_listener" "myalb-listner" {
   load_balancer_arn = aws_lb.myalb.arn
   port              = "80"
@@ -336,6 +349,7 @@ resource "aws_lb_listener" "myalb-listner" {
 output "loadBalancerEndpoint" {
   value = aws_lb.myalb.dns_name
 }
+```
 You can refer this documentation for creating ALB Listener Rules.
 
 Terraform AWS ALB Listener Resource
@@ -345,26 +359,32 @@ With these resources defined, we have successfully set up a Load Balancer that d
 Now run the commands below to verify if the resources we created are valid.
 
 
-COPY
+```
 terraform fmt  # This command will format the code with proper indentation
+```
 
-COPY
+```
 terraform validate
+```
 Run this command to initialize the providers, so that Terraform can access AWS resources.
 
 
-COPY
+```
 terraform init
+```
 Before running the terraform apply command, we need to check what will be created.
 
 
-COPY
+```
 terraform plan
+```
 Now, finally, run this command to create the infrastructure on AWS.
 
 
-COPY
+```
 terraform apply --auto-approve
+```
+
 Conclusion
 By following the steps in this project, we have successfully set up a robust and scalable infrastructure on AWS using Terraform. This setup includes a VPC with two public subnets, an internet gateway, route tables, a security group, two EC2 instances in different availability zones, an S3 bucket, and an Application Load Balancer to distribute traffic across the EC2 instances. Using Terraform ensures consistent and repeatable infrastructure deployment, which improves the reliability and manageability of your applications.
 
