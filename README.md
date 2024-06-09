@@ -84,11 +84,8 @@ aws_2_subnet.tf
    }
  }
 ```
-You can refer this documentation for Subnet.
 
-Terraform AWS Subnet Resource
-
-As we know, when we create a Virtual Private Network, resources inside any subnet do not have internet access by default. So now, we will create an Internet Gateway.
+5] As we know, when we create a Virtual Private Network, resources inside any subnet do not have internet access by default. So now, we will create an Internet Gateway.
 
 aws_3_igw.tf
 
@@ -102,14 +99,11 @@ aws_3_igw.tf
    }
  }
 ```
-You can refer this documentation for Internet Gateway.
 
-Terraform AWS Internet Gateway Resource
 
-Even after creating the Internet gateway, resources in subnets still don't have internet access. This is because subnets don't know how to route traffic. So, we need to create a route table to tell the subnets where to route the traffic. In the route table, we define routes and then associate the table with the subnets.
+6] Even after creating the Internet gateway, resources in subnets still don't have internet access. This is because subnets don't know how to route traffic. So, we need to create a route table to tell the subnets where to route the traffic. In the route table, we define routes and then associate the table with the subnets.
 
 aws_4_rt.tf
-
 
 ```
  resource "aws_route_table" "myrt" {
@@ -125,11 +119,9 @@ aws_4_rt.tf
    }
  }
 ```
-You can refer this documentation for Route Table.
 
-Terraform AWS Route Table Resource
 
-Now we will create a resource to link a route table with a subnet. In this project, we are associating the same route table with both subnets, but in real life, we can create multiple route tables and associate them with different subnets.
+7] Now we will create a resource to link a route table with a subnet. In this project, we are associating the same route table with both subnets, but in real life, we can create multiple route tables and associate them with different subnets.
 
 aws_5_rta.tf
 
@@ -145,11 +137,9 @@ aws_5_rta.tf
    route_table_id = aws_route_table.myrt.id
  }
 ```
-You can refer this documentation for Route Table Association.
 
-Terraform AWS Route Table Association Resource
 
-Now we will create a Security Group inside the VPC we created.
+8] Now we will create a Security Group inside the VPC we created.
 
 aws_6_sg.tf
 
@@ -188,11 +178,9 @@ aws_6_sg.tf
    }
  }
 ```
-You can refer this documentation for Security Group.
 
-Terraform AWS Security Group Resource
 
-Create an S3 bucket for demonstration purposes.
+9] Create an S3 bucket for demonstration purposes.
 
 aws_7_s3.tf
 
@@ -206,11 +194,9 @@ aws_7_s3.tf
    }
  }
 ```
-You can refer this documentation for S3 Bucket.
 
-Terraform AWS S3 Resource
 
-Now we will create 2 EC2 instances in the two different subnets we created earlier in the VPC. We are fetching the AMI ID from the data block so that we don't need to hard code the AMI ID in the aws_instance resource.
+10] Now we will create 2 EC2 instances in the two different subnets we created earlier in the VPC. We are fetching the AMI ID from the data block so that we don't need to hard code the AMI ID in the aws_instance resource.
 
 aws_8_ec2.tf
 
@@ -256,11 +242,8 @@ resource "aws_instance" "mysecondec2" {
   }
 }
 ```
-You can refer this documentation for EC2 Instance.
 
-Terraform AWS EC2 Resource
-
-Next, we will create the Load Balancer itself. We will use an Application Load Balancer (ALB) in this example, which operates at the application layer (Layer 7) and provides advanced routing capabilities.
+11] Next, we will create the Load Balancer itself. We will use an Application Load Balancer (ALB) in this example, which operates at the application layer (Layer 7) and provides advanced routing capabilities.
 
 aws_9_alb.tf
 
@@ -279,11 +262,9 @@ resource "aws_lb" "myalb" {
   }
 }
 ```
-You can refer this documentation for Application Load Balancer.
 
-Terraform AWS Application Load Balancer Resource
 
-After creating the Load Balancer, we need to define a target group. The target group specifies the instances that will receive traffic from the Load Balancer.
+12] After creating the Load Balancer, we need to define a target group. The target group specifies the instances that will receive traffic from the Load Balancer.
 
 aws_10_alb-tg.tf
 
@@ -313,11 +294,9 @@ resource "aws_lb_target_group_attachment" "myalb-tga-2" {
   port             = 80
 }
 ```
-You can refer this documentation for ALB Target Group & Target Group Attachment.
 
-Terraform AWS Target Group Resource
 
-Finally, we will create a listener to forward incoming requests to the target group. The listener listens for incoming connections on the Load Balancer and forwards them to the target group based on the specified rules.
+13] Finally, we will create a listener to forward incoming requests to the target group. The listener listens for incoming connections on the Load Balancer and forwards them to the target group based on the specified rules.
 
 aws_11_alb-lisn.tf
 
@@ -338,13 +317,11 @@ output "loadBalancerEndpoint" {
   value = aws_lb.myalb.dns_name
 }
 ```
-You can refer this documentation for creating ALB Listener Rules.
 
-Terraform AWS ALB Listener Resource
 
 With these resources defined, we have successfully set up a Load Balancer that distributes traffic across our EC2 instances, improving the overall availability and reliability of our application.
 
-Now run the commands below to verify if the resources we created are valid.
+1] Now run the commands below to verify if the resources we created are valid.
 
 
 ```
@@ -354,38 +331,29 @@ terraform fmt  # This command will format the code with proper indentation
 ```
 terraform validate
 ```
-Run this command to initialize the providers, so that Terraform can access AWS resources.
+
+2] Run this command to initialize the providers, so that Terraform can access AWS resources.
 
 
 ```
 terraform init
 ```
-Before running the terraform apply command, we need to check what will be created.
+
+3] Before running the terraform apply command, we need to check what will be created.
 
 
 ```
 terraform plan
 ```
-Now, finally, run this command to create the infrastructure on AWS.
+
+4] Now, finally, run this command to create the infrastructure on AWS.
 
 
 ```
 terraform apply --auto-approve
 ```
 
-Conclusion
+## Conclusion
 By following the steps in this project, we have successfully set up a robust and scalable infrastructure on AWS using Terraform. This setup includes a VPC with two public subnets, an internet gateway, route tables, a security group, two EC2 instances in different availability zones, an S3 bucket, and an Application Load Balancer to distribute traffic across the EC2 instances. Using Terraform ensures consistent and repeatable infrastructure deployment, which improves the reliability and manageability of your applications.
 
-References and Further Reading
-Terraform Registry: The Terraform Registry hosts a wide variety of community-maintained modules that you can use to simplify your Terraform configurations.
-
-AWS Documentation: AWS's official documentation provides detailed information about all AWS services, including EC2, VPC, S3, and Load Balancers. It's an essential resource for understanding how to effectively use AWS services.
-
-By exploring these references, you'll gain a deeper understanding of how to effectively use Terraform and AWS, enabling you to build scalable, secure, and cost-efficient cloud infrastructure.
-
-Thank You
-Thank you for reading this article on setting up AWS infrastructure using Terraform. I hope you found it informative and helpful. If you have any questions, feedback, or suggestions, please leave a comment below. Your input is invaluable and helps me improve the content I create.
-
-If you enjoyed this article, consider sharing it with your network and following me for more insights and tutorials on cloud computing, DevOps, and other tech topics. Together, we can continue to learn and grow in our understanding of these powerful tools and technologies.
-
-Happy Terraforming!
+https://gunjancodes.hashnode.dev/step-by-step-guide-to-creating-scalable-aws-infrastructure-with-terraform
