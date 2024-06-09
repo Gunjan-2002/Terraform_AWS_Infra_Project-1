@@ -1,3 +1,5 @@
+# Creating Scalable AWS Infrastructure with Terraform
+
 ### Project Overview:
 ![Project Architecture](https://github.com/Gunjan-2002/Terraform_AWS_Infra_Project-1/assets/103045206/0e845e6a-4497-4160-9219-11f34dbed4f3)
 In this project, we will set up the infrastructure shown in the image above on AWS using Terraform. This includes a VPC, 2 public subnets, an internet gateway, a Security Group, 2 EC2 instances in different availability zones, an application load balancer, an S3 bucket, and more.
