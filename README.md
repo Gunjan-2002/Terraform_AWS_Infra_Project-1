@@ -1,25 +1,20 @@
 # Creating Scalable AWS Infrastructure with Terraform
 
-### Project Overview:
+## Project Overview:
 ![Project Architecture](https://github.com/Gunjan-2002/Terraform_AWS_Infra_Project-1/assets/103045206/0e845e6a-4497-4160-9219-11f34dbed4f3)
 In this project, we will set up the infrastructure shown in the image above on AWS using Terraform. This includes a VPC, 2 public subnets, an internet gateway, a Security Group, 2 EC2 instances in different availability zones, an application load balancer, an S3 bucket, and more.
 First, we will create a VPC with a CIDR of 10.0.0.0/16. Inside it, we will create 2 public subnets with CIDRs of 10.0.1.0/24 and 10.0.2.0/24. Next, we will create an internet gateway so that resources in our VPC can access the internet. Then, we will set up route tables to define routes that help subnets manage traffic according to rules. After that, we will create a security group with inbound and outbound rules. We will then launch 2 EC2 instances with the same security group in 2 different availability zones, i.e., 2 different subnets. Next, we will create an S3 bucket. After creating all these resources, we will set up an application load balancer to distribute traffic to these 2 EC2 instances.
 This is the project overview. Now, we will go through the step-by-step process to create the infrastructure using Terraform.
 
 
-Prerequisites:
+## Prerequisites:
 Install AWS CLI and Terraform on your machine.
-
 Create an IAM user with administrative access, or grant access to specific services by editing policies.
-
 Configure the AWS account in your CLI by providing the access key and secret key.
 
-Follow these steps:
-Create a provider block to interact with the various resources supported by AWS. You must configure the provider with the correct credentials before you can use it.
-
+## Follow these steps:
+1] Create a provider block to interact with the various resources supported by AWS. You must configure the provider with the correct credentials before you can use it.
 provider.tf
-
-
 ```
  terraform {
    required_providers {
@@ -34,11 +29,8 @@ provider.tf
    region = "us-east-1"
  }
 ```
-You can refer this document for Provider Resource
 
-Terraform Provider Resource
-
-Now, create the VPC resource.
+2] Now, create the VPC resource.
 
 aws_1_vpc.tf
 
@@ -48,14 +40,9 @@ aws_1_vpc.tf
    cidr_block = var.cidr_block
  }
 ```
-You can refer this document for VPC Resource
 
-Terraform AWS VPC Resource
-
-Now, create a variables.tf file for defining variables and a variables.tfvars file to declare them. These two files will contain all the variables needed for our project, and I will add content to them in further steps as required.
-
+3] Now, create a variables.tf file for defining variables and a variables.tfvars file to declare them. These two files will contain all the variables needed for our project, and I will add content to them in further steps as required.
 variables.tf
-
 
 ```
  variable "cidr_block" {
@@ -68,7 +55,8 @@ variables.tfvars
 ```
  cidr_block = "0.0.0.0/16"
 ```
-After creating the VPC, we will now create 2 public subnets in 2 different availability zones within that VPC.
+
+4] After creating the VPC, we will now create 2 public subnets in 2 different availability zones within that VPC.
 
 aws_2_subnet.tf
 
